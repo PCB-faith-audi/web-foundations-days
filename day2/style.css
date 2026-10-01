@@ -1,0 +1,302 @@
+/* ========================================
+   1. RESET & BASE STYLES
+   ======================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #f4f6f8;
+  color: #222;
+  line-height: 1.6;
+}
+
+
+/* ========================================
+   2. HEADER
+   ======================================== */
+
+header {
+  background-color: #8e0000;
+  color: white;
+  text-align: center;
+  padding: 28px 20px;
+}
+
+header h1 {
+  margin: 0 0 6px;
+  font-size: 2.2rem;
+}
+
+header p {
+  margin: 0;
+}
+
+
+/* ========================================
+   3. NAVIGATION
+   ======================================== */
+
+nav {
+  margin-top: 18px;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease,
+              color 0.3s ease;
+}
+
+nav a:hover {
+  background-color: white;
+  color: #8e0000;
+}
+
+
+/* ========================================
+   4. MAIN CONTENT
+   ======================================== */
+
+main {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+main > h2 {
+  margin-bottom: 20px;
+  color: #8e0000;
+}
+
+section {
+  background-color: white;
+  padding: 24px;
+  margin-bottom: 22px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+section h2,
+section h3 {
+  margin-top: 0;
+  color: #8e0000;
+}
+
+
+/* ========================================
+   5. QUICKNOTES FORM
+   ======================================== */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+form label {
+  font-weight: 600;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+form input:focus,
+form textarea:focus {
+  outline: 2px solid #0ba184;
+  border-color: #0ba184;
+}
+
+
+/* ========================================
+   6. BUTTONS
+   ======================================== */
+
+button {
+  width: fit-content;
+  background-color: #0ba184;
+  color: white;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+
+  transition: background-color 0.3s ease,
+              transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #088a70;
+  transform: translateY(-2px);
+}
+
+
+/* ========================================
+   7. NOTES LIST
+   ======================================== */
+
+#notes-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+}
+
+#notes-list li {
+  background-color: #fffbe6;
+  border-left: 4px solid #0ba184;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+
+/* ========================================
+   8. FEATURES GRID
+   ======================================== */
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.features li {
+  background-color: #f4f6f8;
+  border: 1px solid #d9dee3;
+  border-top: 4px solid #0ba184;
+  border-radius: 8px;
+  padding: 18px;
+
+  transition: transform 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.features li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ========================================
+   9. KEYBOARD SHORTCUTS TABLE
+   ======================================== */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #8e0000;
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+
+/* ========================================
+   10. FEEDBACK FORM
+   ======================================== */
+
+section form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+section form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+
+/* ========================================
+   11. FOOTER
+   ======================================== */
+
+footer {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
+footer p {
+  margin: 0;
+}
+
+
+/* ========================================
+   12. RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 600px) {
+  header {
+    padding: 20px 12px;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  nav {
+    gap: 10px;
+  }
+
+  nav a {
+    padding: 7px 10px;
+    font-size: 0.9rem;
+  }
+
+  main {
+    margin: 20px auto;
+    padding: 0 12px;
+  }
+
+  section {
+    padding: 18px;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  th,
+  td {
+    padding: 9px;
+  }
+}
