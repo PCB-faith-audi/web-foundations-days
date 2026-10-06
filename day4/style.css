@@ -1,0 +1,140 @@
+/* CSS variables */
+:root {
+  --background: #f4f6f8;
+  --text: #222;
+  --card: #ffffff;
+  --border: #ccc;
+  --button: #0ba184;
+  --button-text: #ffffff;
+  --warning: #d97706;
+  --over: #dc2626;
+}
+
+/* Dark theme */
+body.dark {
+  --background: #1f2937;
+  --text: #f3f4f6;
+  --card: #374151;
+  --border: #6b7280;
+  --button: #0ba184;
+  --button-text: #ffffff;
+  --warning: #f59e0b;
+  --over: #f87171;
+}
+
+/* Base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Main card */
+main {
+  width: min(760px, calc(100% - 32px));
+  margin: 40px auto;
+  padding: 24px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* Header area */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+/* Textarea */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--card);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: 2px solid var(--button);
+  border-color: var(--button);
+}
+
+/* Counters */
+.counters {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.counters p {
+  margin: 10px 0;
+}
+
+/* Character counter states */
+.warning {
+  color: var(--warning);
+}
+
+.over {
+  color: var(--over);
+  font-weight: bold;
+}
+
+/* Buttons */
+button {
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  background-color: var(--button);
+  color: var(--button-text);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+  main {
+    margin: 20px auto;
+    padding: 18px;
+  }
+
+  .top-bar,
+  .counters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .top-bar button {
+    width: 100%;
+  }
+}
