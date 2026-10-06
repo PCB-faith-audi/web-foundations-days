@@ -3,32 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notes Draft</title>
+    <title>Note Draft</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
   </head>
-
   <body>
     <main>
       <div class="top-bar">
-        <h1>Notes Draft</h1>
-        <button id="theme-toggle" type="button">Dark mode</button>
+        <h1>Note Draft</h1>
+        <button type="button" id="theme-toggle">Dark mode</button>
       </div>
-
-      <label for="note-text">Your note</label>
-
-      <textarea
-        id="note-text"
-        rows="12"
-        placeholder="Start typing your note..."
-      ></textarea>
-
+ 
+      <label for="note-text">Write your note (max 200 characters)</label>
+      <textarea id="note-text" rows="6"></textarea>
+ 
       <div class="counters">
         <p id="char-count">0 / 200 characters</p>
         <p id="word-count">0 words</p>
       </div>
-
-      <button id="clear-btn" type="button">Clear</button>
+ 
+      <button type="button" id="clear-btn">Clear</button>
     </main>
   </body>
 </html>
