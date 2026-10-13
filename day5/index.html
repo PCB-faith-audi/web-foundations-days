@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Directory | Day 5</title>
+    <meta name="description" content="A dynamic user directory that fetches users from an API, with live name filtering and status feedback." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      /* ── Reset & Tokens ────────────────────────────────── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:        #0f1117;
+        --surface:   #1a1d27;
+        --surface2:  #22263a;
+        --border:    #2e3250;
+        --accent:    #6c63ff;
+        --accent2:   #a78bfa;
+        --text:      #e2e8f0;
+        --muted:     #8892b0;
+        --success:   #34d399;
+        --error:     #f87171;
+        --radius:    12px;
+        --shadow:    0 4px 24px rgba(0,0,0,.45);
+        --transition: 0.22s ease;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 2rem 1rem 4rem;
+      }
+
+      /* ── Page header ───────────────────────────────────── */
+      header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      header h1 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.5px;
+      }
+      header p {
+        color: var(--muted);
+        margin-top: .5rem;
+        font-size: .95rem;
+      }
+
+      /* ── Controls ──────────────────────────────────────── */
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        max-width: 720px;
+        margin: 0 auto 1.5rem;
+      }
+
+      #load-users {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .65rem 1.4rem;
+        background: linear-gradient(135deg, var(--accent), #8b5cf6);
+        color: #fff;
+        font-family: inherit;
+        font-size: .95rem;
+        font-weight: 600;
+        border: none;
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+        box-shadow: 0 2px 12px rgba(108, 99, 255, .45);
+      }
+      #load-users:hover:not(:disabled) {
+        opacity: .9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(108, 99, 255, .6);
+      }
+      #load-users:active:not(:disabled) { transform: translateY(0); }
+      #load-users:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+        flex: 1;
+        min-width: 200px;
+        max-width: 340px;
+      }
+      .filter-group label {
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+      }
+      #filter-input {
+        background: var(--surface2);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-family: inherit;
+        font-size: .95rem;
+        padding: .6rem 1rem;
+        outline: none;
+        transition: border-color var(--transition), box-shadow var(--transition);
+      }
+      #filter-input::placeholder { color: var(--muted); }
+      #filter-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(108, 99, 255, .2);
+      }
+
+      /* ── Status ────────────────────────────────────────── */
+      #status {
+        text-align: center;
+        font-size: .9rem;
+        font-weight: 500;
+        min-height: 1.4rem;
+        margin: 0 auto 1.5rem;
+        max-width: 720px;
+        color: var(--muted);
+        transition: color var(--transition);
+      }
+      #status.loading { color: var(--accent2); }
+      #status.success { color: var(--success); }
+      #status.error   { color: var(--error); }
+
+      /* ── User list ─────────────────────────────────────── */
+      #users-list {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1rem;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0;
+      }
+
+      /* User card  (li) – built by JS */
+      #users-list li {
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.2rem 1.4rem;
+        transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+        animation: fadeUp .3s ease both;
+      }
+      #users-list li:hover {
+        border-color: var(--accent);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
+      }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      .user-name  { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: .4rem; }
+      .user-email { font-size: .85rem; color: var(--accent2); margin-bottom: .6rem; }
+      .user-meta  { display: flex; flex-direction: column; gap: .2rem; }
+      .user-meta span {
+        font-size: .82rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+      }
+      .user-meta span::before { content: '›'; color: var(--accent); font-weight: 700; }
+
+      /* Empty / no-match message */
+      .empty-msg {
+        grid-column: 1 / -1;
+        text-align: center;
+        color: var(--muted);
+        font-size: .95rem;
+        padding: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>User Directory</h1>
+      <p>Fetched from JSONPlaceholder &mdash; filter by name in real-time</p>
+    </header>
+
+    <div class="controls">
+      <button id="load-users">Load Users</button>
+
+      <div class="filter-group">
+        <label for="filter-input">Filter by name</label>
+        <input
+          id="filter-input"
+          type="search"
+          placeholder="e.g. Leanne"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <p id="status"></p>
+
+    <ul id="users-list"></ul>
+
+    <script src="users.js" defer></script>
+  </body>
+</html>
