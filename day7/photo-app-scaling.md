@@ -152,6 +152,11 @@ Relational and even document databases are designed for structured, frequently-q
                └────────────────────────────────────────────────────┘
 ```
 
+API and feed requests follow the CDN → load balancer → app-server path. Upload
+bytes take a separate direct path from the client to object storage using the
+pre-signed URL; object storage then emits an upload-complete event to the
+message queue.
+
 ---
 
 ## 6. Component Explanations (One Sentence Each)
@@ -165,6 +170,7 @@ Relational and even document databases are designed for structured, frequently-q
 | **Primary Database** (PostgreSQL)              | Durably stores all structured metadata — users, photos, follows, likes — and is the single authoritative source of truth for all writes.                          |
 | **Read Replica** (PostgreSQL)                  | Receives a continuous stream of changes from the primary and handles all read queries, offloading the primary so it can focus on writes.                          |
 | **Object Storage** (AWS S3)                    | Stores all binary photo files (originals and thumbnails) cheaply and durably at petabyte scale, with direct HTTP access so files bypass the app servers entirely. |
+| **Storage Event Notification** (S3 Events)     | Publishes a durable upload-complete event to the message queue after an original photo is successfully written to object storage.                                  |
 | **Message Queue** (AWS SQS / RabbitMQ)         | Decouples the upload path from thumbnail generation, ensuring that slow or failed thumbnail jobs do not block the user's upload response.                         |
 | **Thumbnail Worker**                           | Consumes jobs from the queue, downloads the original from object storage, resizes it to a thumbnail, and uploads the result back to object storage.               |
 
